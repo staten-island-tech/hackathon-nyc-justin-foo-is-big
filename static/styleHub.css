@@ -1,0 +1,25 @@
+body {
+    background-color: #f8f9fa;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .card-container {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .card {
+    cursor: pointer;
+    width: 18rem;
+    transition: transform 0.3s;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  

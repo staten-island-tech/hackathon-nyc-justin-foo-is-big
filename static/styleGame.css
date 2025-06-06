@@ -1,0 +1,72 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+  
+  #attempts-info {
+    font-weight: bold;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  #game-board {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .memory-card {
+    perspective: 1000px;
+    cursor: pointer;
+    height: 260px;
+    border-radius: 0.5rem;
+  }
+  
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  .flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .card-front,
+  .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+  }
+  
+  .card-front {
+    background-color: #0d6efd;
+    color: white;
+    font-size: 3rem;
+  }
+  
+  .card-back {
+    background-color: white;
+    transform: rotateY(180deg);
+    flex-direction: column;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .card-back img {
+    max-height: 140px;
+    object-fit: cover;
+    border-radius: 0.3rem;
+    margin-bottom: 0.75rem;
+    width: 100%;
+  }
+  

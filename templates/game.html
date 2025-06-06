@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NYC Memory Match - {{ difficulty|capitalize }} Level</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styleGame.css') }}" />
+</head>
+<body>
+  <div class="container my-4">
+    <div class="container my-4">
+        <button id="return-btn" class="btn btn-secondary mb-3" onclick="location.href='/'">
+          ← Return to Difficulty Selection
+        </button>
+      
+        <h1 class="mb-4 text-center">NYC Memory Match - {{ difficulty|capitalize }} Level</h1>
+        ...
+      </div>
+      
+    <h1 class="mb-4 text-center">NYC Memory Match - {{ difficulty|capitalize }} Level</h1>
+
+    <p id="attempts-info" class="text-center">
+      Attempts Left:
+      <span id="attempts">{{
+        settings.attempts if settings.attempts is not none else 'Unlimited'
+      }}</span>
+    </p>
+
+    <div id="game-board" class="row justify-content-center"></div>
+  </div>
+
+  <script>
+    const difficulty = "{{ difficulty }}";
+    const maxAttempts = {{ settings.attempts if settings.attempts is not none else 'null' }};
+    let attemptsLeft = maxAttempts === null ? Infinity : maxAttempts;
+    let flippedCards = [];
+    let matchedPairs = 0;
+
+    async function fetchCards() {
+      try {
+        const response = await fetch(`/api/landmarks?difficulty=${difficulty}`);
+        if (!response.ok) throw new Error("Network response was not ok");
+        const cards = await response.json();
+        return cards;
+      } catch (error) {
+        console.error("Fetch error:", error);
+        return [];
+      }
+    }
+
+    function createCardElement(card, index) {
+      const col = document.createElement('div');
+      col.className = 'col-6 col-sm-4 col-md-3 mb-4';
+
+      const cardEl = document.createElement('div');
+      cardEl.className = 'card memory-card';
+      cardEl.dataset.name = card.name;
+      cardEl.dataset.index = index;
+
+      const inner = document.createElement('div');
+      inner.className = 'card-inner';
+
+      const front = document.createElement('div');
+      front.className = 'card-front';
+      front.textContent = "❓";
+
+      const back = document.createElement('div');
+      back.className = 'card-back';
+
+      const img = document.createElement('img');
+        img.src = card.image;
+        img.alt = card.name;
+        img.onerror = () => {
+        img.src = '/static/images/placeholder.png';  // Add a placeholder image file in static/images
+        };
+
+
+      const caption = document.createElement('div');
+      caption.textContent = card.name;
+
+      back.appendChild(img);
+      back.appendChild(caption);
+
+      inner.appendChild(front);
+      inner.appendChild(back);
+      cardEl.appendChild(inner);
+      col.appendChild(cardEl);
+
+      cardEl.addEventListener('click', () => onCardClick(cardEl));
+
+      return col;
+    }
+
+    function updateAttempts() {
+      document.getElementById('attempts').textContent =
+        attemptsLeft === Infinity ? 'Unlimited' : attemptsLeft;
+    }
+
+    function onCardClick(cardEl) {
+      if (
+        cardEl.classList.contains('flipped') ||
+        flippedCards.length === 2 ||
+        attemptsLeft === 0
+      ) return;
+
+      cardEl.classList.add('flipped');
+      flippedCards.push(cardEl);
+
+      if (flippedCards.length === 2) {
+        attemptsLeft--;
+        updateAttempts();
+
+        const [first, second] = flippedCards;
+        if (first.dataset.name === second.dataset.name) {
+          matchedPairs++;
+          flippedCards = [];
+
+          if (matchedPairs === maxPairs) {
+            setTimeout(() => alert('Congratulations! You matched all landmarks!'), 200);
+          }
+        } else {
+          setTimeout(() => {
+            first.classList.remove('flipped');
+            second.classList.remove('flipped');
+            flippedCards = [];
+
+            if (attemptsLeft === 0) {
+              alert('Game over! You have no attempts left.');
+              // Optionally reload or navigate back to hub
+              // location.href = '/';
+            }
+          }, 1000);
+        }
+      }
+    }
+
+    let maxPairs = 0;
+
+    async function setupGame() {
+      const cards = await fetchCards();
+      maxPairs = cards.length / 2;
+      const board = document.getElementById('game-board');
+      board.innerHTML = '';
+
+      cards.forEach((card, i) => {
+        const cardEl = createCardElement(card, i);
+        board.appendChild(cardEl);
+      });
+      updateAttempts();
+    }
+
+    setupGame();
+  </script>
+</body>
+</html>

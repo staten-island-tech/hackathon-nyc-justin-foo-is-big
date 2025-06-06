@@ -1,84 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>NYC Memory Match</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <title>NYC Memory Match - Choose Difficulty</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styleHub.css') }}" />
 </head>
 <body>
-    <h1>🧠 NYC Landmark Memory Match 🧠</h1>
-    <p>Match all the pairs to win!</p>
-    <div id="game-board"></div>
+  <div class="card-container">
+    <div class="card text-bg-primary" onclick="location.href='/game?difficulty=easy'">
+      <div class="card-body text-center">
+        <h5 class="card-title">Easy</h5>
+        <p class="card-text">4 pairs, Unlimited attempts</p>
+      </div>
+    </div>
 
-    <!-- JavaScript remains unchanged -->
-    <script>
-        const board = document.getElementById('game-board');
-        let firstCard = null;
-        let lockBoard = false;
-        let matchedPairs = 0;
+    <div class="card text-bg-warning" onclick="location.href='/game?difficulty=medium'">
+      <div class="card-body text-center">
+        <h5 class="card-title">Medium</h5>
+        <p class="card-text">8 pairs, 20 attempts</p>
+      </div>
+    </div>
 
-        async function fetchLandmarks() {
-            const res = await fetch('/api/landmarks');
-            const data = await res.json();
-            return data;
-        }
-
-        function createCard(landmark, index) {
-            const card = document.createElement('div');
-            card.classList.add('card');
-            card.dataset.name = landmark.name;
-            card.dataset.index = index;
-            card.textContent = '🗽'; // Hidden face
-
-            card.addEventListener('click', () => handleCardClick(card, landmark));
-            return card;
-        }
-
-        function handleCardClick(card, landmark) {
-            if (lockBoard || card.classList.contains('revealed') || card.classList.contains('matched')) return;
-
-            card.classList.add('revealed');
-            card.textContent = landmark.name;
-
-            if (!firstCard) {
-                firstCard = card;
-                return;
-            }
-
-            if (firstCard.dataset.name === card.dataset.name && firstCard !== card) {
-                firstCard.classList.add('matched');
-                card.classList.add('matched');
-                matchedPairs++;
-
-                if (matchedPairs === 8) {
-                    setTimeout(() => {
-                        alert('🎉 You matched all the NYC landmarks! 🎉');
-                        location.reload();
-                    }, 500);
-                }
-            } else {
-                lockBoard = true;
-                setTimeout(() => {
-                    firstCard.classList.remove('revealed');
-                    card.classList.remove('revealed');
-                    firstCard.textContent = '🗽';
-                    card.textContent = '🗽';
-                    lockBoard = false;
-                }, 1000);
-            }
-
-            firstCard = null;
-        }
-
-        async function initGame() {
-            const landmarks = await fetchLandmarks();
-            landmarks.forEach((landmark, index) => {
-                const card = createCard(landmark, index);
-                board.appendChild(card);
-            });
-        }
-
-        initGame();
-    </script>
+    <div class="card text-bg-danger" onclick="location.href='/game?difficulty=hard'">
+      <div class="card-body text-center">
+        <h5 class="card-title">Hard</h5>
+        <p class="card-text">12 pairs, 15 attempts</p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
