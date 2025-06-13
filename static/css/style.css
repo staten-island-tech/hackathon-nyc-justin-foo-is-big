@@ -1,0 +1,185 @@
+/* Basic reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Container and columns */
+#container {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(to top, #a3c4f3, #e9f0ff);
+}
+
+/* Columns: equal width */
+.column {
+  flex: 1;
+  padding: 20px;
+  border-left: 3px solid #333;
+  border-right: 3px solid #333;
+  overflow-y: auto;
+  background: #f0f4f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#left-column {
+  border-left: none;
+  background: #cce7ff; /* sky blue */
+}
+
+#center-column {
+  background: #dbe9ff;
+  border-left: 3px solid #555;
+  border-right: 3px solid #555;
+}
+
+#right-column {
+  border-right: none;
+  background: #cce7ff;
+}
+
+/* MetroCard container and count */
+#metrocard-container {
+  text-align: center;
+  position: relative;
+  margin-top: 40px;
+}
+
+#metrocard-btn {
+  width: 200px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  user-select: none;
+}
+
+#metrocard-count {
+  font-size: 2.5rem;
+  margin-top: 20px;
+  color: #004080;
+  font-weight: bold;
+  user-select: none;
+}
+
+#metrocard-cps {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: #003366;
+}
+
+/* Upgrade buttons stacked with no spacing */
+#upgrades-container {
+  width: 100%;
+}
+
+.upgrade-btn {
+  width: 100%;
+  padding: 15px 10px;
+  margin: 0;
+  border: 2px solid #004080;
+  background: #b3d1ff;
+  color: #003366;
+  font-size: 1.1rem;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: inset 0 -3px 0 #00264d;
+  border-radius: 0;
+  transition: background 0.3s;
+}
+
+.upgrade-btn:hover:not(:disabled) {
+  background: #66a3ff;
+  color: white;
+}
+
+.upgrade-btn:disabled {
+  background: #e0e0e0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Upgrade text layout */
+.upgrade-name {
+  font-weight: bold;
+}
+
+.upgrade-cost, .upgrade-count {
+  font-size: 0.9rem;
+  color: #00264d;
+  margin-left: 10px;
+}
+
+/* Floors container */
+#floors-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  align-items: center;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+/* Each floor */
+.floor {
+  width: 100%;
+  background: #a3d2ff;
+  border: 2px solid #004080;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: #003366;
+  user-select: none;
+  border-radius: 4px;
+  box-shadow: 0 0 5px #004080;
+}
+
+/* Floating +1 text */
+.floating-plus {
+  position: absolute;
+  font-weight: bold;
+  color: #0059b3;
+  user-select: none;
+  pointer-events: none;
+  animation: floatUpFade 1s forwards;
+  font-size: 1.5rem;
+}
+
+
+@keyframes floatUpFade {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+
+/* Falling MetroCards */
+.falling-metrocard {
+  position: fixed;
+  width: 40px;
+  pointer-events: none;
+  animation: fallFade 2s forwards;
+  z-index: 1000;
+}
+
+@keyframes fallFade {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+}

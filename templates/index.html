@@ -2,34 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>MetroCard Madness</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+  <title>MetroCard Clicker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-  <div id="falling-container"></div>
+  <div id="container">
 
-  <div class="game-grid">
-    <!-- Left Skyscraper -->
-    <div class="skyscraper left-panel">
-      <img id="metrocard-button" src="{{ url_for('static', filename='images/metrocard.png') }}" alt="MetroCard" />
+    <!-- Left column: Big MetroCard clickable -->
+    <div id="left-column" class="column">
+      <div id="metrocard-container">
+        <img src="{{ url_for('static', filename='images/metrocard.png') }}" id="metrocard-btn" alt="MetroCard" />
+        <div id="metrocard-count">0</div>
+        <div id="metrocard-cps">MetroCards per second: 0</div>
+      </div>
     </div>
 
-    <!-- Center Skyscraper -->
-    <div class="skyscraper center-panel">
-      <h1>🌝 MetroCard Madness</h1>
-      <p>MetroCards: <span id="metrocard-count">0</span></p>
-      <p><small>Per second: <span id="per-second">0</span></small></p>
+    <!-- Center column: Floors / Visual Upgrades -->
+    <div id="center-column" class="column">
+      <h2>NYC Floors</h2>
+      <div id="floors-container">
+        <!-- Floors will be added here as upgrades bought -->
+      </div>
     </div>
 
-    <!-- Right Skyscraper -->
-    <div class="skyscraper right-panel store">
-      <h2>Buy Upgrades:</h2>
-      <button onclick="buyUpgrade('hotdog')">🌭 Hot Dog Stand ($10) - +1/sec</button><br>
-      <button onclick="buyUpgrade('taxi')">🚕 Taxi Ad ($100) - +10/sec</button><br>
-      <button onclick="buyUpgrade('billboard')">📻 Times Square Billboard ($1000) - +100/sec</button>
+    <!-- Right column: Upgrade buttons -->
+    <div id="right-column" class="column">
+      <h2>Upgrades</h2>
+      <div id="upgrades-container">
+        <!-- Upgrade buttons inserted here -->
+      </div>
     </div>
+
   </div>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
