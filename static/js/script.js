@@ -50,7 +50,7 @@ function updateMetroCardsPerSecond() {
 // Update displayed MetroCard count and CPS
 function updateDisplay() {
   metrocardCountEl.textContent = formatNumber(metroCards);
-  metrocardCpsEl.textContent = `MetroCards per second: ${metroCardsPerSecond.toFixed(1)}`;
+  metrocardCpsEl.textContent = `MetroCards per second: ${metroCardsPerSecond.toFixed(2)}`;
   updateUpgradeButtons();
   document.title = `${formatNumber(metroCards)} MetroCards - MetroCard Clicker`;
   updateFloors();
@@ -132,16 +132,27 @@ metrocardBtn.addEventListener("click", () => {
 // Floating +1 text animation
 function createFloatingText(text, parent) {
   const rect = parent.getBoundingClientRect();
+
   const floating = document.createElement("div");
   floating.className = "floating-plus";
   floating.textContent = text;
-  floating.style.left = `${rect.left + rect.width / 2}px`;
-  floating.style.top = `${rect.top}px`;
+
+  // RANDOM offset
+  const offsetX = (Math.random() - 0.5) * 60; // between -30 and +30
+  const offsetY = Math.random() * 10;
+
+  // Use page coordinates + scroll position
+  floating.style.left = `${rect.left + rect.width / 2 + offsetX + window.scrollX}px`;
+  floating.style.top = `${rect.top + offsetY + window.scrollY}px`;
+
   document.body.appendChild(floating);
+
   setTimeout(() => {
     floating.remove();
   }, 1000);
 }
+
+
 
 // Create falling MetroCard animation from random top position across full screen width
 function createFallingMetroCard() {
@@ -164,9 +175,10 @@ function createFallingMetroCard() {
 
 // Add MetroCards per second every second
 setInterval(() => {
-  metroCards += metroCardsPerSecond;
+  metroCards += metroCardsPerSecond / 10;
   updateDisplay();
-}, 1000);
+}, 100); // adds every 0.1s
+
 
 // Initialize UI
 createUpgradeButtons();

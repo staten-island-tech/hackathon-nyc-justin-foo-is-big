@@ -52,7 +52,7 @@
 #metrocard-btn {
   width: 200px;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease-in-out;
   user-select: none;
 }
 
@@ -183,3 +183,4 @@
     transform: translateY(100vh);
   }
 }
+
